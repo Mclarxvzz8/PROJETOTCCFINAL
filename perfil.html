@@ -3,16 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="icon" href="assets/icon (2).png">
+  <link rel="icon" href="assets/icon (2).png">
   <title>Login</title>
   <link rel="stylesheet" href="style/perfil.css">
 </head>
+
 <body>
   <div class="container">
     <div class="login-box">
       <a href="index.html">
         <img src="./assets/Designer para o tcc/ICONES/Logo site original-sem fundo.png" width="65" height="65">
       </a>
+
       <h1>Login</h1>
       <p>Acesse sua conta para continuar</p>
 
@@ -26,6 +28,7 @@
     </div>
   </div>
 
+  <!-- 🔥 SCRIPT ATUALIZADO COMPLETO -->
   <script>
     const form = document.getElementById("formLogin");
 
@@ -46,9 +49,20 @@
         console.log("Status:", res.status, "Resultado:", data);
 
         if (res.ok && data.sucesso) {
-          // Sempre mostra mensagem, mesmo que undefined
+
+          // 🔥 ARMAZENAR NOME E ID
+          if (data.nome) localStorage.setItem("nomeUsuario", data.nome);
+          if (data.id) localStorage.setItem("idUsuario", data.id);
+
           alert(data.mensagem || "Login efetuado com sucesso!");
-          if (data.redirect) window.location.href = data.redirect;
+
+          // 🔥 REDIRECIONAMENTO
+          if (data.redirect) {
+            window.location.href = data.redirect;
+          } else {
+            window.location.href = "/index.html";
+          }
+
         } else if (data.erro) {
           alert("Erro: " + data.erro);
         } else {
@@ -61,5 +75,6 @@
       }
     });
   </script>
+
 </body>
 </html>

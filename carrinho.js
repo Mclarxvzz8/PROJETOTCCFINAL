@@ -102,7 +102,7 @@ const criarItemHTML = (item) => {
 const finalizarCompra = () => {
     const carrinho = getCarrinho();
     if (carrinho.length > 0) {
-        alert(`🎉 Compra Finalizada! O total foi de ${formatarPreco(calcularTotal(carrinho))}. Obrigado!`);
+        alert(`🎉 Compra Finalizada! O total foi de ${formatarPreco(calcularTotal(carrinho))}. Obrigado por comprar na MAKEUP.COM!`);
         
       
         salvarCarrinho([]);

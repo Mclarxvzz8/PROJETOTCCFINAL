@@ -60,9 +60,16 @@ app.post("/cadastro", async (req, res) => {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    await pool.execute(sqlInsert, [nome, cpf, telefone, cep, endereco, numero, bairro, cidade, estado, email, hashedSenha]);
+    await pool.execute(sqlInsert, [
+      nome, cpf, telefone, cep, endereco, numero, bairro, cidade, estado, email, hashedSenha
+    ]);
 
-    res.status(201).json({ sucesso: true, mensagem: "Cliente cadastrado com sucesso!", redirect: "/perfil.html" });
+    res.status(201).json({
+      sucesso: true,
+      mensagem: "Cliente cadastrado com sucesso!",
+      redirect: "/perfil.html"
+    });
+
   } catch (err) {
     console.error("❌ Erro ao cadastrar cliente:", err);
     res.status(500).json({ erro: err.message });
@@ -80,14 +87,26 @@ app.post("/login", async (req, res) => {
   try {
     const [rows] = await pool.execute("SELECT * FROM clientes WHERE email = ?", [email]);
 
-    if (rows.length === 0) return res.status(401).json({ erro: "Email não cadastrado!" });
+    if (rows.length === 0) {
+      return res.status(401).json({ erro: "Email não cadastrado!" });
+    }
 
     const cliente = rows[0];
     const senhaCorreta = await bcrypt.compare(senha, cliente.senha);
 
-    if (!senhaCorreta) return res.status(401).json({ erro: "Senha incorreta!" });
+    if (!senhaCorreta) {
+      return res.status(401).json({ erro: "Senha incorreta!" });
+    }
 
-    res.json({ sucesso: true, mensagem: "Login efetuado com sucesso!", redirect: "/index.html" });
+    // 🔥 Retorna nome + id para o front
+    res.json({
+      sucesso: true,
+      mensagem: "Login efetuado com sucesso!",
+      nome: cliente.nome,
+      id: cliente.id, // funciona se sua tabela tiver id
+      redirect: "/index.html"
+    });
+
   } catch (err) {
     console.error("❌ Erro no login:", err);
     res.status(500).json({ erro: err.message });
